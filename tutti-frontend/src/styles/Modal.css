@@ -1,0 +1,97 @@
+/* --- MODAL SYSTEM - NAPRAWIONY --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(50, 40, 20, 0.7); /* Ciemniejsze tło dla lepszego kontrastu */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(3px);
+}
+
+.brutal-modal {
+  background: white;
+  border: 3px solid #544013; /* Twój ciemny brąz */
+  box-shadow: 12px 12px 0px #F2994A; /* Ten pomarańczowy cień z projektu */
+  width: 90%;
+  max-width: 500px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  border-bottom: 3px solid #544013;
+}
+
+.modal-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  margin: 0;
+  color: #544013;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.close-x {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #544013;
+}
+
+/* Styl dla formularza wewnątrz modala */
+.modal-form {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.75rem;
+  color: #A68A56; /* Muted gold */
+  text-transform: uppercase;
+}
+
+/* Przyciski na dole modala */
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.modal-actions .btn-simple {
+  flex: 1;
+  padding: 12px;
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 2px solid;
+}
+
+.modal-actions .btn-simple.edit {
+  background: #A68A56;
+  color: white;
+  border-color: #544013;
+}
+
+.modal-actions .btn-simple.delete {
+  background: white;
+  color: #8C2F39;
+  border-color: #8C2F39;
+}

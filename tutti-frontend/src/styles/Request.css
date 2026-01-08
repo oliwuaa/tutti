@@ -1,0 +1,145 @@
+.requests-view {
+    margin-top: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.requests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.brutal-request-card {
+    background: white;
+    border: 2px solid #544013;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.brutal-request-card:hover {
+    box-shadow: 6px 6px 0px rgba(84, 64, 19, 0.1);
+    transform: translateY(-2px);
+    border-color: #a39071;
+}
+
+.request-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #fffdfa;
+}
+
+.tiny-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #a39071;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.user-full-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    color: #544013;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.instrument-badge {
+    display: inline-block;
+    background: #fff4eb;
+    border: 1px solid #f28c38;
+    color: #f28c38;
+    padding: 6px 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.request-footer {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed #e8b594;
+}
+
+.date-text {
+    font-size: 0.7rem;
+    color: #a39071;
+    font-style: italic;
+}
+
+.request-actions-bar {
+    display: flex;
+    border-top: 2px solid #544013;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 12px;
+    font-family: 'Anton', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.approve-full {
+    background: white;
+    color: #f28c38;
+    border-right: 1px solid #544013;
+}
+
+.approve-full:hover {
+    background: #f28c38;
+    color: white;
+}
+
+.reject-full {
+    background: white;
+    color: #d9534f;
+}
+
+.reject-full:hover {
+    background: #d9534f;
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    border: 2px dashed #a39071;
+    background: rgba(163, 144, 113, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.no-data-icon {
+    font-size: 2.5rem;
+    opacity: 0.5;
+}
+
+.no-data {
+    font-family: 'Anton', sans-serif;
+    color: #a39071;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .requests-grid {
+        grid-template-columns: 1fr;
+    }
+}

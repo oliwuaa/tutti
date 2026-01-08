@@ -1,0 +1,172 @@
+/* --- 1. TOP NAVBAR CONTAINER --- */
+.top-navbar {
+  position: sticky; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #f28c38;
+  border-bottom: 2px solid #544013;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 40px; 
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.nav-logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: #544013;
+  letter-spacing: 1px;
+  /* DODANE ZMIANY: */
+  cursor: pointer;          /* Zmienia kursor na rączkę */
+  user-select: none;        /* Zapobiega podświetlaniu tekstu przy klikaniu */
+  transition: opacity 0.2s; /* Płynny efekt najechania */
+}
+
+.nav-logo:hover {
+  opacity: 0.7;             /* Reakcja na najechanie myszką */
+}
+
+/* --- 2. KONTENER AKCJI (PRAWA STRONA) --- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0; /* Usunięty gap, żeby bloki menu się stykały */
+  height: 100%;
+  position: relative;
+  z-index: 1005;
+}
+
+/* --- 3. SEKCJE MENU (BLOKI) --- */
+.nav-user-section {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-left: 2px solid #544013; /* Pionowa linia oddzielająca orkiestrę od menu */
+}
+
+.nav-user-trigger {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #544013;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 30px; 
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-user-trigger:hover, 
+.nav-user-trigger.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-user-trigger.active {
+  background: white; /* Efekt połączenia z dropdownem */
+}
+
+/* --- 4. DROPDOWN (UNIWERSALNY) --- */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 2px solid #544013;
+  border-top: none;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1006;
+  box-shadow: -10px 10px 0px rgba(84, 64, 19, 0.1);
+  animation: slideDown 0.2s ease-out;
+}
+
+/* Dropdown orkiestry wyrównany do lewej strony względem dropdowna menu */
+.orch-dropdown {
+    right: 0; /* Jeśli chcesz oba po prawej, zostaw 0. Jeśli chcesz by wychodził "spod" nazwy, zostaw 0 */
+}
+
+/* --- 5. ELEMENTY WEWNĄTRZ MENU --- */
+.dropdown-label {
+  font-size: 0.65rem;
+  color: #a39071;
+  padding: 15px 25px 5px 25px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: #fcf9f5;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  padding: 15px 25px;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #544013;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #fffaf5;
+  color: #f28c38;
+  padding-left: 30px; /* Lekkie przesunięcie przy hoverze */
+}
+
+.dropdown-item.current {
+    background-color: #fff5ee;
+    color: #f28c38;
+}
+
+.active-dot {
+    font-size: 0.6rem;
+}
+
+.dropdown-item.danger {
+  color: #a34c4c;
+  border-top: 1px solid #eee;
+}
+
+.dropdown-item.danger:hover {
+    background-color: #fff1f1;
+    color: #ff0000;
+}
+
+.dropdown-divider {
+  height: 2px;
+  background: #eee;
+  margin: 0;
+}
+
+/* --- 6. MECHANIKALIA --- */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 999;
+}
+
+
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,568 @@
+.filter-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+  background: #fffaf5 !important;
+}
+
+.sheet-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 15px;
+}
+
+.sheet-card-v2 {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 20px 30px !important;
+  gap: 15px;
+}
+
+.sheet-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sheet-primary-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  color: #544013;
+  margin: 5px 0;
+  letter-spacing: 1px;
+}
+
+.sheet-author {
+  color: #a39071;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.category-tag {
+  background: #e8b594;
+  color: #544013;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.sheet-quick-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.my-voice-btn {
+  background: #f28c38;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid #544013;
+  box-shadow: 3px 3px 0px #544013;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.my-voice-btn .btn-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  font-weight: 900;
+}
+
+.my-voice-btn:hover {
+  background: #ff9d4d;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #544013;
+}
+
+.btn-icon { font-size: 1.5rem; }
+.btn-text { display: flex; flex-direction: column; }
+.btn-sub { font-size: 0.7rem; opacity: 0.9; }
+
+.score-btn {
+  text-decoration: none;
+  background-color: #544013;
+  color: white;
+  font-family: 'Anton', sans-serif;
+  font-size: 0.8rem;
+  padding: 10px 15px;
+  border: 2px solid #544013;
+  transition: all 0.2s;
+}
+
+.score-btn:hover {
+  background: #544013;
+  color: white;
+}
+
+.all-voices-dropdown {
+  width: 100%;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(163, 144, 113, 0.2);
+  transition: all 0.3s ease;
+}
+
+.all-voices-dropdown[open] {
+  background: rgba(0, 0, 0, 0.15);
+  padding-bottom: 10px;
+}
+
+.all-voices-dropdown summary {
+  padding: 12px 15px;
+  cursor: pointer;
+  color: #a39071;
+  font-weight: 700;
+  font-size: 0.85rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.all-voices-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.all-voices-dropdown summary::before {
+  content: '▶';
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.all-voices-dropdown[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.voices-expanded-container {
+  padding: 0 15px 10px 15px;
+}
+
+.instrument-group {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(163, 144, 113, 0.1);
+}
+
+.instrument-group:first-of-type {
+  border-top: none;
+  margin-top: 5px;
+}
+
+.instrument-group-title {
+  color: #f28c38;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.voices-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.mini-voice-link {
+  background: #aa750b !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #544013 !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.mini-voice-link:hover {
+  background: #544013 !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.music-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.music-modal-window {
+  background: #fffcf9;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  border: 4px solid #544013;
+  box-shadow: 15px 15px 0px #544013;
+  overflow: hidden;
+  position: relative;
+}
+
+.music-editor-container {
+  display: flex;
+  height: 100%;
+}
+
+.music-form-side {
+  width: 400px;
+  min-width: 400px;
+  border-right: 3px solid #544013;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.music-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.music-modal-header h2 {
+  font-family: 'Anton', sans-serif;
+  margin: 0;
+  color: #544013;
+}
+
+.music-close-x {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #544013;
+}
+
+.music-input-section {
+  margin-bottom: 15px;
+}
+
+.music-input-section label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.music-main-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #544013;
+  font-family: inherit;
+}
+
+.music-upload-box {
+  margin: 20px 0;
+}
+
+.music-upload-label {
+  display: block;
+  padding: 15px;
+  border: 2px dashed #544013;
+  background: #fffaf5;
+  text-align: center;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.music-upload-label:hover {
+  background: #f28c38;
+  color: white;
+  border-style: solid;
+}
+
+.music-section-title {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  color: #f28c38;
+}
+
+.music-voice-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #544013;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.music-voice-item.is-active {
+  background: #f28c38;
+  color: white;
+}
+
+.music-voice-item input {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  color: inherit;
+  width: 60%;
+}
+
+.music-voice-selector {
+  display: flex;
+  gap: 2px;
+  background: #544013;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.music-voice-num-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: 0.2s;
+}
+
+.music-voice-num-btn.selected {
+  background: #f28c38;
+  color: white;
+}
+
+.music-voice-item.is-active .music-voice-selector {
+  background: white;
+}
+
+.music-voice-item.is-active .music-voice-num-btn {
+  color: #544013;
+}
+
+.music-voice-item.is-active .music-voice-num-btn.selected {
+  background: #544013;
+  color: white;
+}
+
+.music-voice-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.music-voice-remove {
+  background: #544013;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.music-add-voice-btn {
+  width: 100%;
+  padding: 10px;
+  background: #544013;
+  color: white;
+  border: none;
+  font-weight: 800;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.music-modal-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.music-btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: white;
+  border: 2px solid #544013;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.music-btn-save {
+  flex: 1.5;
+  padding: 12px;
+  background: #f28c38;
+  color: white;
+  border: 2px solid #544013;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.music-pdf-side {
+  flex: 1;
+  background: #444;
+  overflow-y: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-pdf-page-box {
+  background: white;
+  margin-bottom: 40px;
+  padding: 10px;
+  position: relative;
+  cursor: pointer;
+  border: 5px solid transparent;
+  transition: 0.2s;
+}
+
+.music-page-number {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  color: white;
+  font-weight: bold;
+}
+
+.music-pdf-page-box.selected-start { border-color: #3498db; }
+.music-pdf-page-box.range-edge { border-color: #f28c38; }
+.music-pdf-page-box.range-inside { 
+  border-color: rgba(242, 140, 56, 0.5); 
+  background: rgba(242, 140, 56, 0.1);
+}
+
+.music-pdf-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  text-align: center;
+  padding: 50px;
+}
+
+
+
+@media (max-width: 992px) {
+  .music-modal-window {
+    height: 95vh;
+    max-width: 95vw;
+  }
+
+  .music-editor-container {
+    flex-direction: column;
+  }
+
+  .music-form-side {
+    width: 100%;
+    min-width: 100%;
+    height: 50%;
+    border-right: none;
+    border-bottom: 3px solid #544013;
+  }
+
+  .music-pdf-side {
+    height: 50%; 
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .view-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .filter-bar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+
+  .sheet-card-v2 {
+    padding: 15px !important;
+  }
+
+  .sheet-main-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .sheet-quick-actions {
+    width: 100%;
+    flex-wrap: wrap; 
+    gap: 10px;
+  }
+
+  .score-btn, .my-voice-btn {
+    flex: 1; 
+    justify-content: center;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+
+  .voices-mini-grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+
+  .mini-voice-link {
+    padding: 6px 8px !important;
+  }
+
+  .music-modal-actions {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sheet-primary-title {
+    font-size: 1.1rem;
+  }
+
+  .music-form-side {
+    padding: 15px;
+  }
+
+  .music-modal-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .music-pdf-page-box {
+    width: 90%; 
+    margin-bottom: 25px;
+  }
+}

@@ -1,0 +1,21 @@
+:root {
+  --primary-color: #c85a14;
+  --primary-hover: #af8016;
+  --primary-brown: #2e230b;
+  --primary-pink: #d8849e;
+  --bg-dark: #121212;
+  --bg-card: #1e1e1e;
+  --text-main: #544013;
+  --text-muted: #b3b3b3;
+  --font-main: 'Anton', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-y: scroll;
+}

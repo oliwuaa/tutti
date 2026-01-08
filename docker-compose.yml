@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./tutti-backend
+    container_name: tutti-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./tutti-backend/data:/app/data
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:./data/tuttidb
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  frontend:
+    build: ./tutti-frontend
+    container_name: tutti-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
