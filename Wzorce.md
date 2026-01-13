@@ -24,7 +24,7 @@
 - np. klasa: `UserServiceImpl`
 - uzasadnienie :  Wzorzec ten grupuje wszystkie operacje wykonywane podczas usuwania użytkownika (walidację, zwalnianie zasobów członkowskich oraz samo usunięcie z bazy) w jedną nierozerwalną całość.
 - korzyści: Zapewnia to integralność danych – albo wszystkie kroki usuwania zakończą się sukcesem, albo (w razie błędu) system przywróci stan sprzed rozpoczęcia usuwania.
-- 
+
 ### **Lazy Load**
 - np. klasy  `Part`, `Score`
 - uzasadnienie: Wzorzec ten umożliwia wstrzymanie pobierania powiązanych danych z bazy do momentu, gdy zostaną one realnie wywołane w kodzie.
@@ -49,7 +49,7 @@
 - np. klasy  `Orchestra`,  `OrchestraController` oraz aplikacja frontendowa.
 - uzasadnienie: Rozdzielona logika danych (Model), logikę sterowania przepływem (Controller) i sposób prezentacji (View). 
 - korzyści: pozwala na niezależny rozwój backendu i frontendu oraz ułatwia zarządzanie kodem. 
-- 
+
 ### **Page Controller**
 - np. klasa  `OrchestraController`, `MembershipController`...
 - uzasadnienie: Każdy kontroler obsługuje konkretny obszar funkcjonalny (zasób) aplikacji.
