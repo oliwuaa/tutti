@@ -20,33 +20,31 @@
   font-size: 2rem;
   color: #544013;
   letter-spacing: 1px;
-  /* DODANE ZMIANY: */
-  cursor: pointer;          /* Zmienia kursor na rączkę */
-  user-select: none;        /* Zapobiega podświetlaniu tekstu przy klikaniu */
-  transition: opacity 0.2s; /* Płynny efekt najechania */
+  cursor: pointer;         
+  user-select: none;       
+  transition: opacity 0.2s; 
 }
 
 .nav-logo:hover {
-  opacity: 0.7;             /* Reakcja na najechanie myszką */
+  opacity: 0.7;             
 }
 
-/* --- 2. KONTENER AKCJI (PRAWA STRONA) --- */
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 0; /* Usunięty gap, żeby bloki menu się stykały */
+  gap: 0;
   height: 100%;
   position: relative;
   z-index: 1005;
 }
 
-/* --- 3. SEKCJE MENU (BLOKI) --- */
+
 .nav-user-section {
   position: relative;
   height: 100%;
   display: flex;
   align-items: center;
-  border-left: 2px solid #544013; /* Pionowa linia oddzielająca orkiestrę od menu */
+  border-left: 2px solid #544013; 
 }
 
 .nav-user-trigger {
@@ -70,10 +68,9 @@
 }
 
 .nav-user-trigger.active {
-  background: white; /* Efekt połączenia z dropdownem */
+  background: white; 
 }
 
-/* --- 4. DROPDOWN (UNIWERSALNY) --- */
 .nav-dropdown {
   position: absolute;
   top: 100%;
@@ -89,12 +86,12 @@
   animation: slideDown 0.2s ease-out;
 }
 
-/* Dropdown orkiestry wyrównany do lewej strony względem dropdowna menu */
+
 .orch-dropdown {
-    right: 0; /* Jeśli chcesz oba po prawej, zostaw 0. Jeśli chcesz by wychodził "spod" nazwy, zostaw 0 */
+    right: 0; 
 }
 
-/* --- 5. ELEMENTY WEWNĄTRZ MENU --- */
+
 .dropdown-label {
   font-size: 0.65rem;
   color: #a39071;
@@ -125,7 +122,7 @@
 .dropdown-item:hover {
   background: #fffaf5;
   color: #f28c38;
-  padding-left: 30px; /* Lekkie przesunięcie przy hoverze */
+  padding-left: 30px; 
 }
 
 .dropdown-item.current {
@@ -153,7 +150,7 @@
   margin: 0;
 }
 
-/* --- 6. MECHANIKALIA --- */
+
 .nav-overlay {
   position: fixed;
   top: 0;

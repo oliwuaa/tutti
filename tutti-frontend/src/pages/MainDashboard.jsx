@@ -143,7 +143,7 @@ function MainDashboard({ onLogout }) {
       const response = await api.get(endpoint, { responseType: 'blob' });
       const file = new Blob([response.data], { type: 'application/pdf' });
       window.open(URL.createObjectURL(file));
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   const isManagement = userOrchestra && ['OWNER', 'ADMIN', 'CONDUCTOR'].includes(userOrchestra.role);

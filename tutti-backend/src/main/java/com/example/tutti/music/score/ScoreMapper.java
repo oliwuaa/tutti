@@ -17,8 +17,8 @@ public class ScoreMapper {
     }
 
     public void updateEntityFromRequest(CreateScoreRequest request, Score score, String pdfPath) {
-        score.setTitle(request.getTitle());
-        score.setComposer(request.getComposer());
+        score.setTitle(request.title());
+        score.setComposer(request.composer());
         if (pdfPath != null && !pdfPath.isBlank()) {
             score.setPdfPath(pdfPath);
         }

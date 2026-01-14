@@ -1,7 +1,5 @@
 package com.example.tutti.event;
 
-import com.example.tutti.music.part.EventResponse;
-import com.example.tutti.music.part.SetlistItemResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

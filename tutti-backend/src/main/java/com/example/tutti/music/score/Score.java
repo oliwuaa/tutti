@@ -18,10 +18,6 @@ import java.util.*;
 @SuperBuilder
 public class Score extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String title;
     private String composer;
     private String pdfPath;

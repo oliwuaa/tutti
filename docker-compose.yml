@@ -6,9 +6,11 @@ services:
       - "8080:8080"
     volumes:
       - ./tutti-backend/data:/app/data
+      - ./tutti-backend/uploads:/app/uploads
     environment:
       - SPRING_DATASOURCE_URL=jdbc:h2:file:./data/tuttidb
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - UPLOAD_DIR=/app/uploads/scores
 
   frontend:
     build: ./tutti-frontend

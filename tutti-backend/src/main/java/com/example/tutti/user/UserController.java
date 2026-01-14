@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,15 @@ public class UserController {
     @PreAuthorize("@ss.isSelf(#id) or hasRole('ADMIN')")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
         return userService.updateUser(id, request);
+    }
+
+    @Operation(summary = "Zmiana hasła użytkownika", description = "Aktualizuje hasło użytkownika.")
+    @ApiResponse(responseCode = "200", description = "Hasło zostało zmienione", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Użytkownik o podanym ID nie istnieje")
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request) {
+        userService.changePassword(id, request);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Usuwa użytkownika", description = "Usuwa użytkownika z systemu na podstawie jego ID.")

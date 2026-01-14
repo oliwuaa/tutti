@@ -1,7 +1,7 @@
 import React from 'react';
 
-function OrchestraTable({ 
-    orchestras, memberships, expandedId, toggleExpand, 
+function OrchestraTable({
+    orchestras, memberships, expandedId, toggleExpand,
     onDelete, onManage, onUpdateRole, onRemoveMember, onAddMember,
     users, selectedUserToAdd, setSelectedUserToAdd, selectedRoleToAdd, setSelectedRoleToAdd,
     roleWeights, editingMembershipId, setEditingMembershipId
@@ -54,8 +54,8 @@ function OrchestraTable({
                                                                 <td><strong>{m.firstName} {m.lastName}</strong></td>
                                                                 <td>
                                                                     {editingMembershipId === m.id ? (
-                                                                        <select 
-                                                                            autoFocus 
+                                                                        <select
+                                                                            autoFocus
                                                                             className={`brutal-input badge-role-select ${(m.orchestraRole || 'musician').toLowerCase()}`}
                                                                             value={m.orchestraRole || ""}
                                                                             onChange={(e) => { onUpdateRole(m.id, e.target.value); setEditingMembershipId(null); }}
@@ -80,9 +80,14 @@ function OrchestraTable({
                                                     <span className="add-member-title">DODAJ NOWEGO CZŁONKA:</span>
                                                     <select className="brutal-input select-user-add" value={selectedUserToAdd} onChange={(e) => setSelectedUserToAdd(e.target.value)}>
                                                         <option value="">WYBIERZ UŻYTKOWNIKA...</option>
-                                                        {users.filter(u => !members.some(m => m.userId === u.id)).map(u => (
-                                                            <option key={u.id} value={u.id}>{u.firstName} {u.lastName} ({u.email})</option>
-                                                        ))}
+                                                        {users
+                                                            .filter(u => !members.some(m => m.userId === u.id) && u.role !== 'ADMIN')
+                                                            .sort((a, b) => a.lastName.localeCompare(b.lastName))
+                                                            .map(u => (
+                                                                <option key={u.id} value={u.id}>
+                                                                    {u.lastName} {u.firstName} ({u.email})
+                                                                </option>
+                                                            ))}
                                                     </select>
                                                     <select className="brutal-input select-role-add" value={selectedRoleToAdd} onChange={(e) => setSelectedRoleToAdd(e.target.value)}>
                                                         {Object.keys(roleWeights).map(r => <option key={r} value={r}>{r}</option>)}

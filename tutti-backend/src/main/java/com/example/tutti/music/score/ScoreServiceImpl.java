@@ -1,6 +1,10 @@
 package com.example.tutti.music.score;
 
 import com.example.tutti.exception.NotFoundException;
+import com.example.tutti.music.part.CreatePartRequest;
+import com.example.tutti.music.part.Part;
+import com.example.tutti.music.part.PartRepository;
+import com.example.tutti.music.part.PartService;
 import com.example.tutti.orchestra.Orchestra;
 import com.example.tutti.orchestra.OrchestraRepository;
 import com.example.tutti.storage.FileStorageService;
@@ -17,17 +21,64 @@ import java.util.stream.Collectors;
 public class ScoreServiceImpl implements ScoreService {
 
     private final ScoreRepository scoreRepository;
+    private final PartRepository partRepository; // Dodane do usuwania głosów przy edycji
     private final OrchestraRepository orchestraRepository;
     private final FileStorageService fileStorageService;
     private final ScoreMapper scoreMapper;
+    private final PartService partService;
+
+    @Override
+    public ScoreResponse createFullScore(FullScoreRequest fullRequest, String pdfPath) {
+        ScoreResponse savedScore = createScore(fullRequest.score(), pdfPath);
+
+        try {
+            for (CreatePartRequest partReq : fullRequest.parts()) {
+                CreatePartRequest adjustedPart = new CreatePartRequest(
+                        savedScore.getId(),
+                        partReq.type(),
+                        partReq.partNumber(),
+                        partReq.pageStart(),
+                        partReq.pageEnd()
+                );
+                partService.createPart(adjustedPart);
+            }
+        } catch (Exception e) {
+            fileStorageService.deleteFile(pdfPath);
+            throw e;
+        }
+
+        return savedScore;
+    }
+
+    @Override
+    public ScoreResponse updateFullScore(Long id, FullScoreRequest fullRequest, String newPdfPath) {
+        ScoreResponse updatedScore = updateScore(id, fullRequest.score(), newPdfPath);
+
+        List<Part> oldParts = partRepository.findByScoreIdAndScoreOrchestraId(id, fullRequest.score().orchestraId());
+        partRepository.deleteAll(oldParts);
+
+        for (CreatePartRequest partReq : fullRequest.parts()) {
+            CreatePartRequest adjustedPart = new CreatePartRequest(
+                    id,
+                    partReq.type(),
+                    partReq.partNumber(),
+                    partReq.pageStart(),
+                    partReq.pageEnd()
+            );
+            partService.createPart(adjustedPart);
+        }
+
+        return updatedScore;
+    }
+
 
     @Override
     public ScoreResponse createScore(CreateScoreRequest request, String pdfPath) {
-        Orchestra orchestra = orchestraRepository.findById(request.getOrchestraId())
+        Orchestra orchestra = orchestraRepository.findById(request.orchestraId())
                 .orElseThrow(() -> new NotFoundException("Orkiestra nie istnieje."));
 
         if (scoreRepository.existsByTitleAndComposerAndOrchestraId(
-                request.getTitle(), request.getComposer(), request.getOrchestraId())) {
+                request.title(), request.composer(), request.orchestraId())) {
             fileStorageService.deleteFile(pdfPath);
             throw new IllegalArgumentException("Ten utwór już znajduje się w bibliotece tej orkiestry.");
         }
@@ -45,6 +96,17 @@ public class ScoreServiceImpl implements ScoreService {
     public ScoreResponse updateScore(Long id, CreateScoreRequest request, String newPdfPath) {
         Score existingScore = scoreRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Partytura nie istnieje."));
+
+        boolean duplicateExists = scoreRepository.findFiltered(existingScore.getOrchestra().getId(), request.title(), request.composer())
+                .stream()
+                .anyMatch(s -> !s.getId().equals(id));
+
+        if (duplicateExists) {
+            if (newPdfPath != null && !newPdfPath.isBlank()) {
+                fileStorageService.deleteFile(newPdfPath);
+            }
+            throw new IllegalArgumentException("Inny utwór o tym tytule i kompozytorze już istnieje w tej orkiestrze.");
+        }
 
         if (newPdfPath != null && !newPdfPath.isBlank()) {
             fileStorageService.deleteFile(existingScore.getPdfPath());

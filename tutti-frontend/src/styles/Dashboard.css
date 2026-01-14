@@ -108,38 +108,36 @@
   color: white;
 }
 
-/* Kontener modułu */
 .module-container {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 20px; /* Zwiększony padding góra/dół */
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* Rozciąga dzieci (input) na całą szerokość */
+  align-items: stretch; 
 }
 
-/* Nagłówek - dodajemy wyraźny odstęp na dole */
 .module-container h2 {
   font-family: 'Anton', sans-serif;
   color: #544013;
   font-size: 2.5rem;
   margin-top: 0;
-  margin-bottom: 30px; /* WYRAŹNY ODSTĘP od inputa */
+  margin-bottom: 30px;
   text-align: left;
 }
 
-/* Wyszukiwarka */
+
 .search-input {
   width: 100%;
-  box-sizing: border-box; /* Zapobiega wychodzeniu poza kontener przy paddingu */
+  box-sizing: border-box; 
   padding: 18px 24px;
   border-radius: 12px;
   border: 2px solid #eee;
   font-size: 1.1rem;
   outline: none;
   transition: all 0.3s ease;
-  margin-bottom: 40px; /* Odstęp od listy wyników pod spodem */
+  margin-bottom: 40px; 
   background-color: white;
 }
 
@@ -148,14 +146,12 @@
   box-shadow: 0 4px 12px rgba(84, 64, 19, 0.08);
 }
 
-/* Lista wyników */
 .orchestra-results {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Karta orkiestry - KLUCZOWE ZMIANY */
 .orchestra-card-item {
   background: white;
   padding: 24px 32px;
@@ -173,14 +169,14 @@
   border-color: var(--my-orange);
 }
 
-/* Grupa tekstowa (Lewa strona) */
+
 .orch-text-group {
   text-align: left;
 }
 
 .orch-name-big {
-  font-family: 'Anton', sans-serif; /* Jeśli używasz tego fontu */
-  font-size: 2.4rem; /* Duża, wyraźna nazwa */
+  font-family: 'Anton', sans-serif; 
+  font-size: 2.4rem;
   color: #544013;
   margin: 0;
   line-height: 1;
@@ -189,12 +185,11 @@
 
 .orch-address-line {
   font-size: 1.1rem;
-  color: #a39071; /* Subtelniejszy kolor dla adresu */
+  color: #a39071; 
   margin: 4px 0 0 0;
   font-weight: 400;
 }
 
-/* Przycisk Dołącz (Prawa strona) */
 .join-action-btn {
   background-color: #544013;
   color: white;
@@ -213,7 +208,6 @@
   color: #544013;
 }
 
-/* Komunikaty statusu */
 .status-msg {
   color: #8c7a5b;
   font-style: italic;
@@ -223,7 +217,7 @@
 .form-subtitle {
   color: #a39071;
   font-size: 1.1rem;
-  margin-top: -20px; /* Podciąga pod duży nagłówek */
+  margin-top: -20px;
   margin-bottom: 40px;
   text-align: left;
 }
@@ -231,7 +225,7 @@
 .tutti-form {
   display: flex;
   flex-direction: column;
-  gap: 25px; /* Odstępy między polami */
+  gap: 25px;
   width: 100%;
 }
 
@@ -250,7 +244,6 @@
   color: #544013;
 }
 
-/* Przycisk stworzenia - rozciągnięty na całą szerokość dla balansu */
 .create-btn {
   margin-top: 10px;
   width: 100%;

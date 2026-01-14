@@ -8,4 +8,6 @@ public interface ScoreService {
     void deleteScore(Long id);
     List<ScoreResponse> getScores(Long orchestraId, String title, String composer);
     ScoreResponse getScore(Long id);
+    ScoreResponse updateFullScore(Long id, FullScoreRequest fullRequest, String newPdfPath);
+    ScoreResponse createFullScore(FullScoreRequest fullRequest, String pdfPath);
 }

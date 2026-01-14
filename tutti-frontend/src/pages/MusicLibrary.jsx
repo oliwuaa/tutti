@@ -113,50 +113,42 @@ function MusicLibrary() {
   };
 
   const handleSaveMusic = async (musicData) => {
-    try {
-      const formData = new FormData();
-      const scoreRequest = {
+  try {
+    const formData = new FormData();
+
+    const fullRequest = {
+      score: {
         title: musicData.title,
         composer: musicData.composer,
         orchestraId: userOrchestra.id
-      };
+      },
+      parts: musicData.voices
+    };
 
-      formData.append('request', new Blob([JSON.stringify(scoreRequest)], { type: 'application/json' }));
-      if (musicData.file) formData.append('file', musicData.file);
-
-      const scoreRes = editingSong
-        ? await api.put(`/scores/${editingSong.id}`, formData)
-        : await api.post('/scores', formData);
-
-      const scoreId = scoreRes.data.id;
-
-      if (editingSong) {
-        const oldPartsRes = await api.get(`/parts/score/${scoreId}/orchestra/${userOrchestra.id}`);
-        const deletePromises = oldPartsRes.data.map(p => api.delete(`/parts/${p.id}`));
-        await Promise.all(deletePromises);
-      }
-
-      const partPromises = musicData.voices.map(v => {
-        return api.post('/parts', {
-          scoreId: scoreId,
-          orchestraId: userOrchestra.id,
-          type: v.type,
-          partNumber: v.partNumber,
-          pageStart: v.pageStart,
-          pageEnd: v.pageEnd
-        });
-      });
-
-      await Promise.all(partPromises);
-      setIsModalOpen(false);
-      setEditingSong(null);
-      fetchScores();
-      alert("Zapisano pomyślnie!");
-    } catch (err) {
-      console.error("Błąd zapisu:", err);
-      alert("Błąd: " + (err.response?.data?.message || "Wystąpił błąd"));
+    formData.append('request', new Blob([JSON.stringify(fullRequest)], { type: 'application/json' }));
+    
+    if (musicData.file) {
+      formData.append('file', musicData.file);
     }
-  };
+
+    if (musicData.id) {
+      await api.put(`/scores/${musicData.id}`, formData);
+    } else {
+      await api.post('/scores', formData);
+    }
+
+    setIsModalOpen(false);
+    fetchScores();
+    alert(musicData.id ? "Zmiany zostały zapisane!" : "Utwór został dodany do biblioteki!");
+    
+  } catch (err) {
+    console.error("Błąd zapisu:", err);
+    const errorMsg = err.response?.data?.message || "Wystąpił nieoczekiwany błąd serwera";
+    alert("Błąd: " + errorMsg);
+
+    throw err; 
+  }
+};
 
   const handleOpenPdf = async (endpoint) => {
     try {

@@ -9,4 +9,5 @@ public interface UserService {
     UserResponse updateUser(Long userId, UserRequest request);
     void deleteUser(Long userId);
     List<UserResponse> getAllUsers();
+    void changePassword(Long userId, ChangePasswordRequest request);
 }

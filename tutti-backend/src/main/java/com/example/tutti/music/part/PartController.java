@@ -5,6 +5,7 @@ import com.example.tutti.storage.PdfExtractionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/parts")
 @RequiredArgsConstructor
+@Tag(name = "Parts", description = "Zarządzanie głosami partytur w orkiestrze.")
 public class PartController {
 
     private final PartService partService;

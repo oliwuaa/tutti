@@ -4,6 +4,7 @@ import api from '../api/axios';
 import ProfileInfo from '../component/profile/ProfileInfo';
 import OwnedOrchestras from '../component/profile/OwnedOrchestras';
 import Memberships from '../component/profile/Memberships';
+import Modal from '../component/EditBox';
 import '../styles/Events.css';
 import '../styles/MyProfiles.css';
 
@@ -28,6 +29,10 @@ function MyProfile() {
 
     const [localIsEditing, setLocalIsEditing] = useState(false);
     const [formData, setFormData] = useState({ firstName: '', lastName: '' });
+
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [passwordData, setPasswordData] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
+
     const [ownedOrchestras, setOwnedOrchestras] = useState([]);
     const [allMemberships, setAllMemberships] = useState([]);
     const [expandedId, setExpandedId] = useState(null);
@@ -50,7 +55,6 @@ function MyProfile() {
     useEffect(() => {
         if (isAddingOrchestra) {
             api.get('/orchestras').then(res => {
-
                 const filtered = res.data.filter(orch =>
                     !ownedOrchestras.some(owned => owned.id === orch.id) &&
                     !allMemberships.some(m => m.orchestraId === orch.id && (m.status === 'ACTIVE' || m.status === 'PENDING'))
@@ -64,7 +68,7 @@ function MyProfile() {
         try {
             const res = await api.get(`/orchestras/owner/${user.id}`);
             setOwnedOrchestras(res.data);
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
     };
 
     const fetchAllMemberships = async () => {
@@ -84,7 +88,7 @@ function MyProfile() {
             setEquipmentData(prev => ({
                 ...prev, [membershipId]: { clothes: clothesRes.data, instruments: instrumentsRes.data }
             }));
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
     };
 
     const handleToggleEdit = async () => {
@@ -94,37 +98,78 @@ function MyProfile() {
                 if (setUser) setUser(res.data);
                 setLocalIsEditing(false);
                 alert("Dane zapisane!");
-            }  catch (err) { alert(err.message);  }
+            } catch (err) { alert(err.message); }
         } else setLocalIsEditing(true);
+    };
+
+    const closePasswordModal = () => {
+        setIsPasswordModalOpen(false);
+        setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    };
+
+    const handlePasswordChangeSubmit = async () => {
+        if (!passwordData.oldPassword || !passwordData.newPassword) {
+            return alert("Wypełnij pola hasła!");
+        }
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            return alert("Nowe hasła nie są identyczne!");
+        }
+        try {
+            await api.patch(`/users/${user.id}`, {
+                oldPassword: passwordData.oldPassword,
+                newPassword: passwordData.newPassword
+            });
+            alert("Hasło zostało zmienione!");
+            closePasswordModal();
+        } catch (err) {
+            alert(err.response?.data?.message || "Błąd podczas zmiany hasła. Sprawdź stare hasło.");
+        }
     };
 
     const handleCreateOrUpdateOrchestra = async () => {
         if (!createForm.name.trim()) return;
         try {
             const payload = { name: createForm.name.toUpperCase(), address: createForm.address };
-            if (editingOrchestraId) await api.put(`/orchestras/${editingOrchestraId}`, payload);
-            else await api.post('/orchestras', payload);
+            let response;
 
-            await fetchOwnedOrchestras();
-
-            if (refreshDashboard) {
-                await refreshDashboard();
+            if (editingOrchestraId) {
+                response = await api.put(`/orchestras/${editingOrchestraId}`, payload);
+            } else {
+                response = await api.post('/orchestras', payload);
             }
 
+            if (!editingOrchestraId && response.data) {
+                const newOrchData = {
+                    id: response.data.id,
+                    orchestraId: response.data.id,
+                    orchestraName: response.data.name,
+                    role: 'OWNER'
+                };
+
+                if (onSelectOrchestra) {
+                    onSelectOrchestra(newOrchData);
+                }
+            }
+
+            await fetchOwnedOrchestras();
+            if (refreshDashboard) await refreshDashboard();
+
             setIsCreatingOrchestra(false);
+            setEditingOrchestraId(null);
             setCreateForm({ name: "", address: "" });
-        }  catch (err) { alert(err.message); }
+
+            alert(editingOrchestraId ? "Zmiany zapisane!" : "Orkiestra została utworzona!");
+        } catch (err) {
+            alert(err.message);
+        }
     };
 
     const handleDeleteOrchestra = async (e, id, name) => {
         e.stopPropagation();
         if (window.confirm(`Czy na pewno chcesz USUNĄĆ orkiestrę ${name}?`)) {
             await api.delete(`/orchestras/${id}`);
-
             await fetchOwnedOrchestras();
-            if (refreshDashboard) {
-                await refreshDashboard();
-            }
+            if (refreshDashboard) await refreshDashboard();
         }
     };
 
@@ -145,7 +190,7 @@ function MyProfile() {
             });
             fetchAllMemberships();
             setIsAddingOrchestra(false);
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
     };
 
     const handleRemoveMembership = async (id, name, isPending) => {
@@ -167,62 +212,145 @@ function MyProfile() {
                     )}
                     <h1 className="welcome-title">MÓJ PROFIL</h1>
                 </div>
-                <button
-                    className="text-action-btn edit-btn"
-                    onClick={handleToggleEdit}
-                    style={{ background: localIsEditing ? '#544013' : '#a39071' }}
-                >
-                    {localIsEditing ? "ZAPISZ DANE" : "EDYTUJ PROFIL"}
-                </button>
+                <div className="header-actions">
+                    <button
+                        className="text-action-btn edit-btn"
+                        onClick={handleToggleEdit}
+                        style={{ background: localIsEditing ? '#544013' : '#a39071' }}
+                    >
+                        {localIsEditing ? "ZAPISZ DANE" : "EDYTUJ PROFIL"}
+                    </button>
+                </div>
             </header>
 
             <div className="details-grid">
-                <ProfileInfo
-                    localIsEditing={localIsEditing}
-                    formData={formData}
-                    setFormData={setFormData}
-                    user={user}
-                />
-
-                <div className="orchestras-column">
-                    <OwnedOrchestras
-                        ownedOrchestras={ownedOrchestras}
-                        onManageOrchestra={handleManageOrchestra}
-                        handleStartEditOrchestra={(e, orch) => {
-                            setEditingOrchestraId(orch.id);
-                            setCreateForm({ name: orch.name, address: orch.address });
-                            setIsCreatingOrchestra(true);
-                        }}
-                        handleDeleteOrchestra={handleDeleteOrchestra}
-                        isCreatingOrchestra={isCreatingOrchestra}
-                        setIsCreatingOrchestra={setIsCreatingOrchestra}
-                        createForm={createForm}
-                        setCreateForm={setCreateForm}
-                        handleCreateOrUpdateOrchestra={handleCreateOrUpdateOrchestra}
-                        setEditingOrchestraId={setEditingOrchestraId}
+                <div className="profile-column">
+                    <ProfileInfo
+                        localIsEditing={localIsEditing}
+                        formData={formData}
+                        setFormData={setFormData}
+                        user={user}
                     />
 
-                    <Memberships
-                        activeMemberships={allMemberships.filter(m => m.status === 'ACTIVE')}
-                        pendingRequests={allMemberships.filter(m => m.status === 'PENDING')}
-                        expandedId={expandedId}
-                        handleToggleExpand={(id) => {
-                            if (expandedId === id) setExpandedId(null);
-                            else { setExpandedId(id); fetchEquipment(id); }
-                        }}
-                        equipmentData={equipmentData}
-                        handleRemoveMembership={handleRemoveMembership}
-                        isAddingOrchestra={isAddingOrchestra}
-                        setIsAddingOrchestra={setIsAddingOrchestra}
-                        availableOrchestras={availableOrchestras}
-                        joinForm={joinForm}
-                        setJoinForm={setJoinForm}
-                        handleSendJoinRequest={handleSendJoinRequest}
-                        INSTRUMENT_TYPES={INSTRUMENT_TYPES}
-                        toRoman={toRoman}
-                    />
+                    {localIsEditing && (
+                        <button
+                            type="button"
+                            className="cancel-btn"
+                            style={{
+                                width: '100%',
+                                marginTop: '10px',
+                                borderStyle: 'dashed',
+                                color: '#544013',
+                                background: '#fff'
+                            }}
+                            onClick={() => setIsPasswordModalOpen(true)}
+                        >
+                            ZMIEŃ HASŁO
+                        </button>
+                    )}
                 </div>
+
+                {!isSystemAdmin ? (
+                    <div className="orchestras-column">
+                        <OwnedOrchestras
+                            ownedOrchestras={ownedOrchestras}
+                            onManageOrchestra={handleManageOrchestra}
+                            handleStartEditOrchestra={(e, orch) => {
+                                setEditingOrchestraId(orch.id);
+                                setCreateForm({ name: orch.name, address: orch.address });
+                                setIsCreatingOrchestra(true);
+                            }}
+                            handleDeleteOrchestra={handleDeleteOrchestra}
+                            isCreatingOrchestra={isCreatingOrchestra}
+                            setIsCreatingOrchestra={setIsCreatingOrchestra}
+                            createForm={createForm}
+                            setCreateForm={setCreateForm}
+                            handleCreateOrUpdateOrchestra={handleCreateOrUpdateOrchestra}
+                            setEditingOrchestraId={setEditingOrchestraId}
+                        />
+
+                        <Memberships
+                            activeMemberships={allMemberships.filter(m => m.status === 'ACTIVE')}
+                            pendingRequests={allMemberships.filter(m => m.status === 'PENDING')}
+                            expandedId={expandedId}
+                            handleToggleExpand={(id) => {
+                                if (expandedId === id) setExpandedId(null);
+                                else { setExpandedId(id); fetchEquipment(id); }
+                            }}
+                            equipmentData={equipmentData}
+                            handleRemoveMembership={handleRemoveMembership}
+                            isAddingOrchestra={isAddingOrchestra}
+                            setIsAddingOrchestra={setIsAddingOrchestra}
+                            availableOrchestras={availableOrchestras}
+                            joinForm={joinForm}
+                            setJoinForm={setJoinForm}
+                            handleSendJoinRequest={handleSendJoinRequest}
+                            INSTRUMENT_TYPES={INSTRUMENT_TYPES}
+                            toRoman={toRoman}
+                        />
+                    </div>
+                ) : (
+                    <div className="orchestras-column">
+                        <div className="event-card" style={{ textAlign: 'center', padding: '40px' }}>
+                            <h3 style={{ opacity: 0.6 }}>KONTO ADMINISTRATORA</h3>
+                            <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                                Jako administrator systemu zarządzasz wszystkimi orkiestrami z poziomu panelu administracyjnego.
+                            </p>
+                        </div>
+                    </div>
+                )}
             </div>
+
+            <Modal
+                isOpen={isPasswordModalOpen}
+                onClose={closePasswordModal}
+                title="Zmiana Hasła"
+            >
+                <div className="add-orchestra-form" style={{ border: 'none', padding: 0, background: 'transparent' }}>
+                    <p style={{ fontSize: '0.85rem', color: '#544013', marginBottom: '20px', opacity: 0.8 }}>
+                        Wprowadź obecne hasło oraz podaj nowe.
+                    </p>
+
+                    <div className="form-group">
+                        <label>OBECNE HASŁO</label>
+                        <input
+                            type="password"
+                            className="up-form-input editing"
+                            value={passwordData.oldPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>NOWE HASŁO</label>
+                        <input
+                            type="password"
+                            className="up-form-input editing"
+                            value={passwordData.newPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>POWTÓRZ NOWE HASŁO</label>
+                        <input
+                            type="password"
+                            className="up-form-input editing"
+                            value={passwordData.confirmPassword}
+                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="form-actions" style={{ marginTop: '30px' }}>
+                        <button className="confirm-btn" onClick={handlePasswordChangeSubmit}>
+                            ZAKTUALIZUJ HASŁO
+                        </button>
+                        <button className="cancel-btn" onClick={closePasswordModal}>
+                            ANULUJ
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

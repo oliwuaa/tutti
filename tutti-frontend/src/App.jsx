@@ -17,6 +17,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('selectedOrchestra');
     setToken(null);
   };
 

@@ -1,7 +1,6 @@
 package com.example.tutti.event;
 
 import com.example.tutti.exception.NotFoundException;
-import com.example.tutti.music.part.EventResponse;
 import com.example.tutti.music.score.Score;
 import com.example.tutti.music.score.ScoreRepository;
 import com.example.tutti.orchestra.Orchestra;
@@ -82,7 +81,6 @@ public class EventServiceImpl implements EventService {
                 .toList();
     }
 
-    // Metody prywatne zostają w implementacji
     private void mapRequestToEntity(EventRequest request, Event event, Long orchestraId) {
         event.setName(request.name());
         event.setType(request.type());

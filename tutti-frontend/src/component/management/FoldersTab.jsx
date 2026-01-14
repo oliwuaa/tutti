@@ -37,7 +37,7 @@ function FoldersTab({ orchestraId }) {
     try {
       const res = await api.get(`/marching-folders/orchestra/${orchestraId}/stats`);
       setStats(res.data);
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   useEffect(() => { fetchStats(); }, [orchestraId]);
@@ -87,7 +87,7 @@ function FoldersTab({ orchestraId }) {
     try {
       await api.delete(`/marching-folders/${folderId}`);
       fetchStats();
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   const handleSaveVoice = async () => {
@@ -192,7 +192,7 @@ function FoldersTab({ orchestraId }) {
           <label className="form-label-small">WYBIERZ TYP MARSZU</label>
           <select
             className="brutal-input brutal-select"
-            value="" 
+            value=""
             onChange={e => {
               const val = e.target.value;
               if (!val) return;
@@ -202,10 +202,19 @@ function FoldersTab({ orchestraId }) {
             }}
           >
             <option value="" disabled>-- WYBIERZ --</option>
-            {Object.entries(MARCHING_TYPES).map(([key, val]) => (
-              <option key={key} value={key}>{val}</option>
-            ))}
+            {Object.entries(MARCHING_TYPES)
+              .filter(([key]) => !groupedFolders[key])
+              .map(([key, val]) => (
+                <option key={key} value={key}>{val}</option>
+              ))
+            }
           </select>
+
+          {Object.keys(MARCHING_TYPES).every(key => groupedFolders[key]) && (
+            <p style={{ fontSize: '0.75rem', color: '#666', marginTop: '10px', textAlign: 'center' }}>
+              Wszystkie dostępne kategorie teczek są już dodane.
+            </p>
+          )}
         </div>
       </Modal>
 

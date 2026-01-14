@@ -74,7 +74,7 @@ function ClothesTab({ orchestraId, members = [] }) {
     try {
       await api.delete(`/clothes/${toDelete.id}`);
       fetchClothes();
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   const handleAssign = async (clothId, memberId) => {
@@ -82,7 +82,7 @@ function ClothesTab({ orchestraId, members = [] }) {
     try {
       await api.post(`/clothes/${clothId}/assign/${memberId}`);
       fetchClothes();
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   const handleUnassign = async (clothId) => {
@@ -90,7 +90,7 @@ function ClothesTab({ orchestraId, members = [] }) {
     try {
       await api.post(`/clothes/${clothId}/unassign`);
       fetchClothes();
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   const handleSaveNew = async () => {
@@ -99,7 +99,7 @@ function ClothesTab({ orchestraId, members = [] }) {
       setLocalCategories(prev => prev.filter(c => c !== editingCloth.type));
       setEditingCloth(null);
       fetchClothes();
-    }  catch (err) { alert(err.message); }
+    } catch (err) { alert(err.message); }
   };
 
   return (
@@ -237,15 +237,29 @@ function ClothesTab({ orchestraId, members = [] }) {
       <Modal isOpen={newTypeModal} onClose={() => setNewTypeModal(false)} title="DODAJ TYP UBRANIA">
         <div className="modal-form">
           <label className="form-label-small">WYBIERZ KATEGORIĘ</label>
-          <select className="brutal-input brutal-select" value="" onChange={e => {
-            const val = e.target.value;
-            if (!localCategories.includes(val)) setLocalCategories([...localCategories, val]);
-            setExpandedType(val);
-            setNewTypeModal(false);
-          }}>
+          <select
+            className="brutal-input brutal-select"
+            value=""
+            onChange={e => {
+              const val = e.target.value;
+              if (!localCategories.includes(val)) setLocalCategories([...localCategories, val]);
+              setExpandedType(val);
+              setNewTypeModal(false);
+            }}
+          >
             <option value="" disabled>-- WYBIERZ --</option>
-            {Object.entries(CLOTH_TYPES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+            {Object.entries(CLOTH_TYPES)
+              .filter(([key]) => !groupedClothes[key])
+              .map(([k, v]) => (
+                <option key={k} value={k}>{v}</option>
+              ))
+            }
           </select>
+          {Object.keys(CLOTH_TYPES).every(key => groupedClothes[key]) && (
+            <p style={{ fontSize: '0.7rem', color: '#666', marginTop: '10px' }}>
+              Wszystkie dostępne typy ubrań zostały już dodane.
+            </p>
+          )}
         </div>
       </Modal>
 

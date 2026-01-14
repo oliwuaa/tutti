@@ -2,6 +2,13 @@ import { useState } from 'react';
 import api from '../api/axios';
 import '../styles/Events.css';
 
+const EVENT_TYPE_TRANSLATIONS = {
+    'CONCERT': 'Koncert',
+    'REHEARSAL': 'Próba',
+    'GIG': 'Granie',
+    'OTHER': 'Inne'
+};
+
 function EventDetails({ event, onBack, userOrchestra }) {
   const [loadingPdf, setLoadingPdf] = useState(null);
 
@@ -9,6 +16,7 @@ function EventDetails({ event, onBack, userOrchestra }) {
 
   const userInstrument = userOrchestra?.instrument;
   const orchestraId = userOrchestra?.orchestraId || userOrchestra?.id;
+  const translateType = (type) => EVENT_TYPE_TRANSLATIONS[type] || type;
 
   const handleViewPdf = async (item) => {
     const scoreId = item.score?.id || item.scoreId;
@@ -46,7 +54,7 @@ function EventDetails({ event, onBack, userOrchestra }) {
           <button className="back-link" onClick={onBack}>← WRÓĆ DO HARMONOGRAMU</button>
           <h1 className="welcome-title">{event.name}</h1>
           <p className="welcome-subtitle">
-            {event.type} • {event.location || event.address}
+            {translateType(event.type)}
           </p>
         </div>
       </header>
@@ -64,7 +72,6 @@ function EventDetails({ event, onBack, userOrchestra }) {
 
           <div className="info-section">
             <label className="detail-label">PLAN I UWAGI</label>
-            {/* STYL pre-wrap zachowuje formatowanie tekstu */}
             <p className="event-description" style={{ whiteSpace: 'pre-wrap' }}>
               {event.desc || event.plan || event.description || "Brak dodatkowych uwag."}
             </p>
@@ -72,7 +79,7 @@ function EventDetails({ event, onBack, userOrchestra }) {
         </div>
 
         <div className="details-setlist-card full-width-event">
-          <label className="detail-label">SETLISTA / PROGRAM</label>
+          <label className="detail-label">SETLISTA</label>
           {event.setlist && event.setlist.length > 0 ? (
             <div className="display-setlist">
               {[...event.setlist]

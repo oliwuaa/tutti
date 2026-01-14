@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MembershipResponse {
-    private Long id;              // ID członkostwa
-    private Long orchestraId;     // ID orkiestry
-    private String orchestraName; // Nazwa orkiestry
-    private Long userId;          // ID użytkownika
+    private Long id;
+    private Long orchestraId;
+    private String orchestraName;
+    private Long userId;
     private String firstName;
     private String lastName;
     private InstrumentType instrumentType;

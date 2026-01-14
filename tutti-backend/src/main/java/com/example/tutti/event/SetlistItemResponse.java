@@ -1,4 +1,4 @@
-package com.example.tutti.music.part;
+package com.example.tutti.event;
 
 public record SetlistItemResponse(
         Long id,

@@ -1,6 +1,5 @@
 package com.example.tutti.event;
 
-import com.example.tutti.music.part.EventResponse;
 import java.util.List;
 
 public interface EventService {

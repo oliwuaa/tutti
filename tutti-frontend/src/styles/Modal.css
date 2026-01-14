@@ -1,8 +1,7 @@
-/* --- MODAL SYSTEM - NAPRAWIONY --- */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(50, 40, 20, 0.7); /* Ciemniejsze tło dla lepszego kontrastu */
+  background: rgba(50, 40, 20, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,8 +11,8 @@
 
 .brutal-modal {
   background: white;
-  border: 3px solid #544013; /* Twój ciemny brąz */
-  box-shadow: 12px 12px 0px #F2994A; /* Ten pomarańczowy cień z projektu */
+  border: 3px solid #544013; 
+  box-shadow: 12px 12px 0px #F2994A; 
   width: 90%;
   max-width: 500px;
   padding: 0;
@@ -47,7 +46,6 @@
   color: #544013;
 }
 
-/* Styl dla formularza wewnątrz modala */
 .modal-form {
   padding: 25px;
   display: flex;
@@ -64,11 +62,10 @@
 .form-group label {
   font-family: 'Anton', sans-serif;
   font-size: 0.75rem;
-  color: #A68A56; /* Muted gold */
+  color: #A68A56; 
   text-transform: uppercase;
 }
 
-/* Przyciski na dole modala */
 .modal-actions {
   display: flex;
   gap: 15px;

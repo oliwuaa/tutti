@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional // Całość procesów członkostwa powinna być transakcyjna
+@Transactional
 public class MembershipServiceImpl implements MembershipService {
 
     private final OrchestraRepository orchestraRepository;

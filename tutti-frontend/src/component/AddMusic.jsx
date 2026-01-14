@@ -120,25 +120,57 @@ function AddMusic({ isOpen, onClose, onSave, initialData = null }) {
         return () => { if (currentUrl) URL.revokeObjectURL(currentUrl); };
     }, [isOpen, initialData]);
 
-    const handleSaveInternal = () => {
+    const getOccupiedVoicesForInstrument = (instrumentVal, currentIdx) => {
+        const occupied = new Set();
+        musicData.voices.forEach((v, idx) => {
+            if (idx !== currentIdx && v.instrument === instrumentVal) {
+                v.voiceNumbers.forEach(num => occupied.add(num));
+            }
+        });
+        return occupied;
+    };
+
+    const isInstrumentFull = (instrumentVal, currentIdx) => {
+        const occupied = getOccupiedVoicesForInstrument(instrumentVal, currentIdx);
+        return occupied.size >= 4;
+    };
+
+    const handleSaveInternal = async () => {
         setIsSubmitting(true);
-        const flattenedVoices = [];
-        musicData.voices.forEach(v => {
-            v.voiceNumbers.forEach(numStr => {
-                flattenedVoices.push({
-                    type: v.instrument,
-                    partNumber: ROMAN_TO_NUM[numStr],
-                    pageStart: v.startPage,
-                    pageEnd: v.endPage || v.startPage
+        try {
+            const flattenedVoices = [];
+            musicData.voices.forEach(v => {
+                v.voiceNumbers.forEach(numStr => {
+                    flattenedVoices.push({
+                        scoreId: initialData?.id || null,
+                        type: v.instrument,
+                        partNumber: ROMAN_TO_NUM[numStr],
+                        pageStart: v.startPage,
+                        pageEnd: v.endPage || v.startPage
+                    });
                 });
             });
-        });
 
-        const dataToSave = {
-            ...musicData,
-            voices: flattenedVoices
-        };
-        onSave(dataToSave);
+            const dataToSave = {
+                id: initialData?.id,
+                title: musicData.title,
+                composer: musicData.composer,
+                file: musicData.file,
+                voices: flattenedVoices
+            };
+
+
+            await onSave(dataToSave);
+
+
+            onClose();
+
+        } catch (error) {
+            console.error("Błąd podczas zapisywania w komponencie:", error);
+
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handlePageClick = (pageNum) => {
@@ -230,12 +262,24 @@ function AddMusic({ isOpen, onClose, onSave, initialData = null }) {
                                             value={v.instrument}
                                             onChange={e => {
                                                 const nv = [...musicData.voices];
-                                                nv[idx].instrument = e.target.value;
+                                                const newInst = e.target.value;
+                                                nv[idx].instrument = newInst;
+                                                const occupied = getOccupiedVoicesForInstrument(newInst, idx);
+                                                const possible = ['I', 'II', 'III', 'IV'];
+                                                const firstFree = possible.find(p => !occupied.has(p)) || 'I';
+                                                nv[idx].voiceNumbers = [firstFree];
                                                 setMusicData({ ...musicData, voices: nv });
                                             }}
                                             onClick={e => e.stopPropagation()}
                                         >
-                                            {INSTRUMENTS.map(ins => <option key={ins.val} value={ins.val}>{ins.label}</option>)}
+                                            {INSTRUMENTS.map(ins => {
+                                                const full = isInstrumentFull(ins.val, idx);
+                                                return (
+                                                    <option key={ins.val} value={ins.val} disabled={full && ins.val !== v.instrument}>
+                                                        {ins.label} {full && ins.val !== v.instrument ? '(ZAJĘTY)' : ''}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                         <button className="music-voice-remove" onClick={(e) => {
                                             e.stopPropagation();
@@ -247,13 +291,18 @@ function AddMusic({ isOpen, onClose, onSave, initialData = null }) {
 
                                     <div className="music-voice-meta">
                                         <div className="music-voice-selector">
-                                            {['I', 'II', 'III', 'IV'].map(num => (
-                                                <button key={num} type="button"
-                                                    className={`music-voice-num-btn ${v.voiceNumbers.includes(num) ? 'selected' : ''}`}
-                                                    onClick={e => { e.stopPropagation(); toggleVoiceNumber(idx, num); }}>
-                                                    {num}
-                                                </button>
-                                            ))}
+                                            {['I', 'II', 'III', 'IV'].map(num => {
+                                                const occupied = getOccupiedVoicesForInstrument(v.instrument, idx);
+                                                const isUnavailable = occupied.has(num);
+                                                return (
+                                                    <button key={num} type="button"
+                                                        disabled={isUnavailable}
+                                                        className={`music-voice-num-btn ${v.voiceNumbers.includes(num) ? 'selected' : ''}`}
+                                                        onClick={e => { e.stopPropagation(); if (!isUnavailable) toggleVoiceNumber(idx, num); }}>
+                                                        {num}
+                                                    </button>
+                                                );
+                                            })}
                                         </div>
                                         <span className="music-page-info">
                                             {v.startPage ? `STR. ${v.startPage}${v.endPage ? '-' + v.endPage : ''}` : 'ZAZNACZ STRONY'}
@@ -264,9 +313,19 @@ function AddMusic({ isOpen, onClose, onSave, initialData = null }) {
                             <button
                                 type="button"
                                 className="music-add-voice-btn"
-                                onClick={() => setMusicData({ ...musicData, voices: [...musicData.voices, { instrument: 'FLUTE', voiceNumbers: ['I'], startPage: null, endPage: null }] })}
+                                onClick={() => {
+                                    const nextAvailableInst = INSTRUMENTS.find(ins => !isInstrumentFull(ins.val, -1))?.val || 'FLUTE';
+                                    const occupied = getOccupiedVoicesForInstrument(nextAvailableInst, -1);
+                                    const firstFree = ['I', 'II', 'III', 'IV'].find(p => !occupied.has(p)) || 'I';
+                                    const newVoices = [
+                                        ...musicData.voices,
+                                        { instrument: nextAvailableInst, voiceNumbers: [firstFree], startPage: null, endPage: null }
+                                    ];
+                                    setMusicData({ ...musicData, voices: newVoices });
+                                    setActiveVoiceIdx(newVoices.length - 1);
+                                }}
                             >
-                                + DODAJ KOLEJNY GŁOS
+                                DODAJ KOLEJNY GŁOS
                             </button>
                         </div>
 

@@ -41,7 +41,8 @@ function SystemAdminPanel() {
             setAllOrchestras(orchRes.data);
             setAllUsers(userRes.data);
             setAllMemberships(membRes.data);
-        }  catch (err) { alert(err.message); 
+        } catch (err) {
+            alert(err.message);
             if (error.response?.status === 403) navigate('/profile');
         } finally {
             setLoading(false);
@@ -61,7 +62,7 @@ function SystemAdminPanel() {
             });
             await fetchData();
 
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
 
     };
 
@@ -79,7 +80,7 @@ function SystemAdminPanel() {
             setSelectedUserToAdd('');
             await fetchData();
 
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
     };
 
     const deleteOrchestra = async (id) => {
@@ -87,7 +88,7 @@ function SystemAdminPanel() {
             try {
                 await api.delete(`/orchestras/${id}`);
                 setAllOrchestras(prev => prev.filter(o => o.id !== id));
-            }  catch (err) { alert(err.message); }
+            } catch (err) { alert(err.message); }
         }
     };
 
@@ -98,7 +99,7 @@ function SystemAdminPanel() {
             try {
                 await api.delete(`/memberships/${membershipId}`);
                 await fetchData();
-            }  catch (err) { alert(err.message); }
+            } catch (err) { alert(err.message); }
         }
     };
 
@@ -108,7 +109,7 @@ function SystemAdminPanel() {
                 await api.delete(`/users/${userId}`);
                 setAllUsers(prev => prev.filter(u => u.id !== userId));
                 setAllMemberships(prev => prev.filter(m => m.userId !== userId));
-            }  catch (err) { alert(err.message); }
+            } catch (err) { alert(err.message); }
         }
     };
 
@@ -122,7 +123,7 @@ function SystemAdminPanel() {
             });
             setEditingUser(null);
             await fetchData();
-        }  catch (err) { alert(err.message); }
+        } catch (err) { alert(err.message); }
 
     };
 

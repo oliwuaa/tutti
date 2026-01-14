@@ -1,6 +1,4 @@
-package com.example.tutti.music.part;
-
-import com.example.tutti.event.EventType;
+package com.example.tutti.event;
 
 import java.time.LocalDateTime;
 import java.util.List;

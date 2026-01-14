@@ -72,4 +72,3 @@ Projekt został zbudowany przy użyciu:
 - **Baza danych H2**
 - **React**
 - **Axios**
-   

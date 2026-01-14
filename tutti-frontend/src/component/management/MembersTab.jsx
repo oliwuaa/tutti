@@ -48,10 +48,11 @@ function MembersTab({ members, refresh }) {
     const handleSaveMember = async () => {
         try {
             const instrumentType = sanitizeInstrument(editingMember.instrument);
+            const voiceNumber = parseInt(editingMember.voice, 10) || 1;
             await Promise.all([
                 api.put(`/memberships/${editingMember.id}/change-instrument`, {
                     instrumentType: instrumentType, 
-                    partNumber: parseInt(editingMember.voice, 10)
+                    partNumber: voiceNumber
                 }),
                 api.put(`/memberships/${editingMember.id}/change-role`, {
                     orchestraRole: editingMember.orchestraRole
@@ -124,7 +125,7 @@ function MembersTab({ members, refresh }) {
                                             onClick={() => setEditingMember({
                                                 ...m,
                                                 instrument: m.instrument || 'NONE',
-                                                voice: m.voice || 1
+                                                voice: m.voice !== null && m.voice !== undefined ? m.voice.toString() : "1"
                                             })}
                                         >
                                             EDYTUJ
