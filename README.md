@@ -39,7 +39,7 @@
 
 ## 🚀 Szybki Start (Docker)
 
-Najszybszym sposobem na uruchomienie aplikacji jest użycie Dockera. Dzięki temu nie musisz konfigurować środowiska Java czy Node.js lokalnie.
+Najszybszym sposobem na uruchomienie aplikacji jest użycie Dockera.
 
 ### Wymagania
 * Zainstalowany i uruchomiony **Docker Desktop**.
@@ -47,7 +47,7 @@ Najszybszym sposobem na uruchomienie aplikacji jest użycie Dockera. Dzięki tem
 ### Instrukcja uruchomienia
 1. Sklonuj repozytorium:
    ```bash
-   git clone [https://github.com/oliwuaa/tutti.git](https://github.com/oliwuaa/tutti.git)
+   git clone https://github.com/oliwuaa/tutti.git
    cd tutti
 2. Zbuduj i uruchom kontenery:
    ```bash
@@ -57,6 +57,15 @@ Najszybszym sposobem na uruchomienie aplikacji jest użycie Dockera. Dzięki tem
 - Aplikacja frontendowa (React) będzie dostępna pod adresem: [http://localhost:3000](http://localhost:3000)
 - Po uruchomieniu aplikacji, dokumentacja Swaggera dostępna jest pod adresem:
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+## Jak zacząć?
+
+1. Podczas 1 uruchomienia zostaje stworzony profil **admina**:
+   * **login:** admin@tutti.pl
+   * **hasło:** admin123
+
+2. Po stworzeniu swojego konta, aby móc korzystać z funkcjonalności aplikacji, należy stworzyć orkiestrę (zostajesz jej *właścicielem*), lub dołączyć do istniejącej już orkiestry (twoja prośba o dołączenie musi zostać zaakceptowana).
+
 
 
 ## 🛠 Technologie
@@ -72,3 +81,4 @@ Projekt został zbudowany przy użyciu:
 - **Baza danych H2**
 - **React**
 - **Axios**
+   
